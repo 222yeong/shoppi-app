@@ -1,5 +1,6 @@
 package screen
 //카테고리별 상품목록 관리, 사용자가 요청한 상품의 목록을 출력
+import data.CartItems
 import data.Product  //data 패키지의 product 클래스를 이용해서 배열에 추가
 
 class ShoppingProductList {
@@ -29,12 +30,43 @@ class ShoppingProductList {
                 ***=========================***
                 선택하신 [$selectedCategory] 카테고리 상품입니다.
                 """.trimIndent())
+
+            /*
             val productSize = categoryProducts.size
             for (index in 0 until productSize) {   //그냥 until만 쓰는거
                 println("${index}. ${categoryProducts[index].name}")
             }
+            */
+            categoryProducts.forEachIndexed { index, product ->
+                println("${index}. ${product.name}")
+            }
+            showCartOption(categoryProducts, selectedCategory)
         } else {
             showEmptyProductMessage(selectedCategory)
+        }
+    }
+
+    private fun showCartOption(categoryProducts: List<Product>, selectedCategory: String) {
+        println(
+            """
+                ***=================================***
+                장바구니에 담을 상품 번호를 선택해주세요.
+            """.trimIndent()
+        )
+
+        val selectedIndex = readLine()?.toIntOrNull()!!   //int로 변환
+        categoryProducts.getOrNull(selectedIndex)?.let { product ->
+            CartItems.addProduct(product)
+            println("=> 장바구니로 이동하시려면 #을, 계속 쇼핑하시려면 *을 입력해주세요.")
+            val answer = readLine()
+            if (answer == "#") {
+                val shoppingCart = ShoppingCart()
+                shoppingCart.showCartItems()
+            } else if (answer == "*") {
+                showProducts(selectedCategory)
+            } else {
+                //TODO
+            }
         }
     }
 
