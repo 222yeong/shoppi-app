@@ -1,5 +1,6 @@
 package screen
 //카테고리별 상품목록 관리, 사용자가 요청한 상품의 목록을 출력
+import LINE_DiViDER
 import data.CartItems
 import data.Product  //data 패키지의 product 클래스를 이용해서 배열에 추가
 import extensions.getNotEmptyInt
@@ -35,7 +36,7 @@ class ShoppingProductList {
         val categoryProducts = categories[selectedCategory]
         if(!categoryProducts.isNullOrEmpty()) {       //상품목록이 하나라도 존재하면
             println("""
-                ***=========================***
+                $LINE_DiViDER
                 선택하신 [$selectedCategory] 카테고리 상품입니다.
                 """.trimIndent())
 
@@ -57,7 +58,7 @@ class ShoppingProductList {
     private fun showCartOption(categoryProducts: List<Product>, selectedCategory: String) {
         println(
             """
-                ***=================================***
+                $LINE_DiViDER
                 장바구니에 담을 상품 번호를 선택해주세요.
             """.trimIndent()
         )
