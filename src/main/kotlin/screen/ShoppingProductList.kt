@@ -6,7 +6,7 @@ import data.Product  //data 패키지의 product 클래스를 이용해서 배�
 import extensions.getNotEmptyInt
 import extensions.getNotEmptyString
 
-class ShoppingProductList : Screen() {
+class ShoppingProductList(private val selectedCategory: String) : Screen() {
     private val products = arrayOf(                             //private: 선언한 클래스 내부에서만 참조 가능
         Product("패션", "겨울 패딩"),
         Product("패션", "겨울 바지"),             //product.kt의 data class
@@ -32,7 +32,7 @@ class ShoppingProductList : Screen() {
     할 수 있는 categories 변수를 추가함*/
 
 
-    fun showProducts(selectedCategory: String) {      //selectedCategory:받은 상품명
+    fun showProducts() {
         ScreenStack.push(this)
         val categoryProducts = categories[selectedCategory]
         if(!categoryProducts.isNullOrEmpty()) {       //상품목록이 하나라도 존재하면
@@ -50,13 +50,13 @@ class ShoppingProductList : Screen() {
             categoryProducts.forEachIndexed { index, product ->
                 println("${index}. ${product.name}")
             }
-            showCartOption(categoryProducts, selectedCategory)
+            showCartOption(categoryProducts)
         } else {
             showEmptyProductMessage(selectedCategory)
         }
     }
 
-    private fun showCartOption(categoryProducts: List<Product>, selectedCategory: String) {
+    private fun showCartOption(categoryProducts: List<Product>) {
         println(
             """
                 $LINE_DiViDER
@@ -73,10 +73,13 @@ class ShoppingProductList : Screen() {
                 val shoppingCart = ShoppingCart()
                 shoppingCart.showCartItems()
             } else if (answer == "*") {
-                showProducts(selectedCategory)
+                showProducts()
             } else {
                 //TODO
             }
+        } ?: kotlin.run {
+            println("$selectedIndex 번은 목록에 없는 상품 번호 입니다. 다시 입력해주세요.")
+            showProducts()
         }
     }
 

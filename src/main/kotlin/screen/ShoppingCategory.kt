@@ -26,8 +26,8 @@ class ShoppingCategory : Screen(){
             shoppingCart.showCartItems()
         } else {
             if (categories.contains(selectedCategory)) {
-                val shoppingProductList = ShoppingProductList()
-                shoppingProductList.showProducts(selectedCategory)  //입력한 카테고리의 목록 보여줌
+                val shoppingProductList = ShoppingProductList(selectedCategory)
+                shoppingProductList.showProducts()  //입력한 카테고리의 목록 보여줌
             } else {
                 showErrorMessage(selectedCategory)                  //그 외에는 존재하지 않는 카테고리
             }

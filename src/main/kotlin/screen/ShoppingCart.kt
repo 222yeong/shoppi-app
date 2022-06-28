@@ -1,6 +1,8 @@
 package screen
 
+import LINE_DiViDER
 import data.CartItems
+import extensions.getNotEmptyString
 
 class ShoppingCart : Screen() {
     private  val products = CartItems.products       //CartItems.kt의 val products 사용
@@ -26,6 +28,41 @@ class ShoppingCart : Screen() {
                 장바구니에 담긴 상품이 없습니다.
             """.trimIndent())
         }
+        showPreviousScreenOption()
+    }
 
+    private fun showPreviousScreenOption() {
+        println(
+            """
+                $LINE_DiViDER
+                이전 화면으로 돌아가시겠습니까? (y/n)
+            """.trimIndent()
+        )
+        when (readLine().getNotEmptyString()) {
+            "y" -> {
+                moveToPreviousScreen()
+            }
+            "n" -> {
+                showCartItems()
+            }
+            else -> {
+                // 재입력 요청
+            }
+        }
+    }
+
+    private fun moveToPreviousScreen() {
+        ScreenStack.pop()
+        when (val previousScreen = ScreenStack.peek()) {
+            is ShoppingCategory -> {
+                previousScreen.showCategories()
+            }
+            is ShoppingProductList -> {
+                previousScreen.showProducts()
+            }
+            is ShoppingCart, is ShoppingHome -> {
+                //아무 것도 하지 않음
+            }
+        }
     }
 }
