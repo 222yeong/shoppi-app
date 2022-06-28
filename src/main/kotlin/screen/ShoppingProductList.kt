@@ -6,7 +6,7 @@ import data.Product  //data 패키지의 product 클래스를 이용해서 배�
 import extensions.getNotEmptyInt
 import extensions.getNotEmptyString
 
-class ShoppingProductList {
+class ShoppingProductList : Screen() {
     private val products = arrayOf(                             //private: 선언한 클래스 내부에서만 참조 가능
         Product("패션", "겨울 패딩"),
         Product("패션", "겨울 바지"),             //product.kt의 data class
@@ -33,6 +33,7 @@ class ShoppingProductList {
 
 
     fun showProducts(selectedCategory: String) {      //selectedCategory:받은 상품명
+        ScreenStack.push(this)
         val categoryProducts = categories[selectedCategory]
         if(!categoryProducts.isNullOrEmpty()) {       //상품목록이 하나라도 존재하면
             println("""

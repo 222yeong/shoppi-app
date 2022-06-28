@@ -2,11 +2,12 @@ package screen
 
 import data.CartItems
 
-class ShoppingCart {
+class ShoppingCart : Screen() {
     private  val products = CartItems.products       //CartItems.kt의 val products 사용
                                                      //products = <Product, Int> 3개
                                                      //Product = (categoryLabel, name)
     fun showCartItems(){
+         ScreenStack.push(this)
         if (products.isNotEmpty()) {
             println(
                 products.keys.joinToString( //해당상품 정보까지 출력
