@@ -3,8 +3,9 @@ package screen
 import data.CartItems
 
 class ShoppingCart {
-    private  val products = CartItems.products
-
+    private  val products = CartItems.products       //CartItems.kt의 val products 사용
+                                                     //products = <Product, Int> 3개
+                                                     //Product = (categoryLabel, name)
     fun showCartItems(){
         if (products.isNotEmpty()) {
             println(

@@ -2,11 +2,13 @@ package screen
 //카테고리별 상품목록 관리, 사용자가 요청한 상품의 목록을 출력
 import data.CartItems
 import data.Product  //data 패키지의 product 클래스를 이용해서 배열에 추가
+import extensions.getNotEmptyInt
+import extensions.getNotEmptyString
 
 class ShoppingProductList {
-    private val products = arrayOf(
+    private val products = arrayOf(                             //private: 선언한 클래스 내부에서만 참조 가능
         Product("패션", "겨울 패딩"),
-        Product("패션", "겨울 바지"),
+        Product("패션", "겨울 바지"),             //product.kt의 data class
         Product("전자기기", "핸드폰"),
         Product("전자기기", "블루투스 이어폰"),
         Product("전자기기", "노트북"),
@@ -16,16 +18,22 @@ class ShoppingProductList {
         Product("반려동물용품", "간식")
     )
 
+    //list 의 product 와 문자열을  mapping.  list 와 map 둘 다 immutable
+
     private val categories: Map<String, List<Product>> = products.groupBy {product ->
         product.categoryLabel
     }
-    //사용자가 선택한 카테고리의 상품 목록을 표시.
-    //배열에서 제공하는 groupBy 연산자를 이용해 categoryLabel을 기준으로 해당하는 상품을 쉽게 조회
-    //할 수 있는 categories 변수를 추가함함
+    //categoryLabel 을 키값으로 갖는 레이블
+    //category 에 해당하는 상품목록이 value
 
-    fun showProducts(selectedCategory: String) {   //selectedCategory:받은 상품명
+    /*사용자가 선택한 카테고리의 상품 목록을 표시.
+    배열에서 제공하는 groupBy 연산자를 이용해 categoryLabel 을 기준으로 해당하는 상품을 쉽게 조회
+    할 수 있는 categories 변수를 추가함*/
+
+
+    fun showProducts(selectedCategory: String) {      //selectedCategory:받은 상품명
         val categoryProducts = categories[selectedCategory]
-        if(!categoryProducts.isNullOrEmpty()) {   //상품목록이 하나라도 존재하면
+        if(!categoryProducts.isNullOrEmpty()) {       //상품목록이 하나라도 존재하면
             println("""
                 ***=========================***
                 선택하신 [$selectedCategory] 카테고리 상품입니다.
@@ -33,7 +41,7 @@ class ShoppingProductList {
 
             /*
             val productSize = categoryProducts.size
-            for (index in 0 until productSize) {   //그냥 until만 쓰는거
+            for (index in 0 until productSize) {   //그냥 until 만 쓰는거
                 println("${index}. ${categoryProducts[index].name}")
             }
             */
@@ -54,11 +62,11 @@ class ShoppingProductList {
             """.trimIndent()
         )
 
-        val selectedIndex = readLine()?.toIntOrNull()!!   //int로 변환
+        val selectedIndex = readLine().getNotEmptyInt()
         categoryProducts.getOrNull(selectedIndex)?.let { product ->
-            CartItems.addProduct(product)
+            CartItems.addProduct(product)                             //CartItems.kt 의 addProduct 함수
             println("=> 장바구니로 이동하시려면 #을, 계속 쇼핑하시려면 *을 입력해주세요.")
-            val answer = readLine()
+            val answer = readLine().getNotEmptyString()
             if (answer == "#") {
                 val shoppingCart = ShoppingCart()
                 shoppingCart.showCartItems()
